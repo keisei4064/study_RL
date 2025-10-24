@@ -68,6 +68,7 @@ class Agent:
 
     def update(self, action, reward):
         self.ns[action] += 1
+        # 標本平均でQ:行動価値推定値を更新
         self.Qs[action] += (reward - self.Qs[action]) / self.ns[action]
 
     def get_action(self) -> int:
