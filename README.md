@@ -8,26 +8,26 @@
 
 方策 $\pi(a|s)$ が与えられたとき，その方策における状態価値関数 $v_\pi(s)$ を計算する方法
 
-$$
+```math
 V_{k+1}(s) = \sum_{a, s'} \pi(a|s) p(s'|s, a) \{ r(s, a, s') + \gamma V_k(s') \}
-$$
+```
 
 > ベルマン方程式を更新式として用いている
 
 尚，状態遷移が決定論的だとすると，
 
-$$
+```math
 \begin{aligned}
 s' &= f(s, a) \text{   として,}\\
 V_{k+1}(s) &= \sum_{a} \pi(a|s) \{ r(s, a, s') + \gamma V_k(s') \}
 \end{aligned}
-$$
+```
 
 十分に繰り返せば，真の状態価値関数 $v_\pi(s)$ に収束する
 
-$$
+```math
 v_\pi(s) = \lim_{k \to \infty} V_k(s)
-$$
+```
 
 ![iterative_policy_evaluation](./deep-learning-from-scratch-4/ch04/iterative_policy_evaluation.gif)
 
@@ -39,19 +39,19 @@ $$
 
 1. 現在の決定論的方策 $\mu(s)$ のもと，反復方策評価（収束するまで）
 
-$$
+```math
 \begin{aligned}
 a &= \mu(s) \text{ として，}\\
 V_{k+1}(s) &= \sum_{s'} p(s'|s,a)\{ r(s, a, s') + \gamma V_k(s') \} \\
 v_{\mu}(s) &= \lim_{k \to \infty} V_k(s)
 \end{aligned}
-$$
+```
 
 2. 方策更新(greedy化)
 
-$$
+```math
 \mu(s) \leftarrow \arg\max_{a} \sum_{s'} p(s'|s, a) \{ r(s, a, s') + \gamma v_{\mu}(s') \} \\
-$$
+```
 
 収束して得られる方策 $\mu^*(s)$ が最適方策
 
@@ -61,13 +61,13 @@ $$
 
 反復方策法をベースとして，方策評価を1回しか行わないことにすると更新式を一つにまとめられる．
 
-$$
+```math
 \begin{aligned}
 V_{k+1}(s) &= \max_a \sum_{s'} p(s'|s, a)\{ r(s, a, s') + \gamma V_k(s') \} \\
 V_\ast(s) &= \lim_{k \to \infty} V_k(s) \\
 \mu_{\ast}(s) &= \arg\max_a \sum_{s'} p(s'|s, a)\{ r(s, a, s') + \gamma V_{*}(s') \}
 \end{aligned}
-$$
+```
 
 > ベルマン最適方程式を更新式として用いている
 
