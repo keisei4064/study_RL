@@ -1,4 +1,4 @@
-# 反復方策評価
+# 反復方策評価-2マスだけ
 
 import matplotlib.pyplot as plt
 

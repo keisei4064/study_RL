@@ -1,15 +1,16 @@
 from matplotlib import animation
 import io
 import matplotlib.pyplot as plt
-from matplotlib import animation
 from matplotlib.figure import Figure
 
 
 # アニメーション
 def save_animation_with_steps(
+    plot_name: str,
     fig_history: list[Figure],
     filepath: str = "anim.gif",
     interval: int = 500,
+    show_anim: bool = False,
 ):
     """fig_historyからタイトル付きアニメーションを生成（軸非表示）"""
 
@@ -29,7 +30,7 @@ def save_animation_with_steps(
         im = ax.imshow(img, animated=True)
 
         # タイトルをAxes上に描画（ここが確実に残る）
-        title_text = f"Value Iteration - Step: {i}"
+        title_text = f"{plot_name} - Step: {i}"
         title = ax.text(
             0.5,
             1.02,
@@ -44,7 +45,7 @@ def save_animation_with_steps(
         plt.close(f)
 
     ani = animation.ArtistAnimation(
-        fig, ims, interval=interval, repeat_delay=1000, blit=True
+        fig, ims, interval=interval, repeat_delay=1000, blit=False
     )
 
     if filepath.endswith(".gif"):
@@ -55,4 +56,8 @@ def save_animation_with_steps(
         raise ValueError("filename must end with .gif or .mp4")
 
     print(f"✅ アニメーションを保存しました: {filepath}")
+
+    if show_anim:
+        plt.show()
+
     plt.close(fig)

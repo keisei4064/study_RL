@@ -4,10 +4,14 @@ if "__file__" in globals():
 
     sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from collections import defaultdict
+import pathlib
 from common.gridworld import GridWorld
 from ch04.policy_eval import policy_eval
 from typing import Any
 import pprint
+from matplotlib.figure import Figure
+from common.save_animation import save_animation_with_steps
+import copy
 
 
 def argmax(d: dict[Any, float]) -> int:
@@ -48,6 +52,9 @@ def greedy_policy(
     return pi
 
 
+fig_history: list[Figure] = []
+
+
 # 方策反復法
 def policy_iter(env: GridWorld, gamma, threshold=0.001, is_render=True):
     pi: defaultdict[Any, dict[Any, float]] = defaultdict(
@@ -61,7 +68,8 @@ def policy_iter(env: GridWorld, gamma, threshold=0.001, is_render=True):
 
         # メモ: 割引率のおかげで，最短でゴール地点の報酬1を得ようとする方策を獲得できる
         if is_render:
-            env.render_v(V, pi)
+            fig = env.render_v(V, pi)
+            fig_history.append(copy.deepcopy(fig))
 
         if new_pi == pi:  # 方策が変化しなくなったら終了
             print("収束: pi=")
@@ -77,3 +85,11 @@ if __name__ == "__main__":
     env = GridWorld()
     gamma = 0.9
     pi = policy_iter(env, gamma)
+
+    # アニメーションを保存
+    save_animation_with_steps(
+        "Policy Iteration",
+        fig_history,
+        str(pathlib.Path(__file__).parent / "policy_iteration.gif"),
+        interval=500,
+    )

@@ -7,10 +7,10 @@ from collections import defaultdict
 from common.gridworld import GridWorld
 from ch04.policy_iter import greedy_policy
 from typing import Any
-from matplotlib.figure import Figure
 import pprint
 import copy
 import pathlib
+from matplotlib.figure import Figure
 from common.save_animation import save_animation_with_steps
 
 
@@ -84,10 +84,12 @@ if __name__ == "__main__":
     print("最適方策pi*=")
     pprint.pprint(pi)
 
-    env.render_v(V, pi)
+    fig = env.render_v(V, pi)
+    fig_history.append(copy.deepcopy(fig))
 
     # アニメーションを保存
     save_animation_with_steps(
+        "Value Iteration",
         fig_history,
         str(pathlib.Path(__file__).parent / "value_iteration.gif"),
         interval=500,

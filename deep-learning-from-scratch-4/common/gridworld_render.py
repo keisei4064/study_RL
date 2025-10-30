@@ -29,7 +29,7 @@ class Renderer:
         ax.set_ylim(0, self.ys)
         ax.grid(True)
 
-    def render_v(self, v=None, policy=None, print_value=True):
+    def render_v(self, v=None, policy=None, print_value=True, show_plt=True):
         self.set_figure()
 
         ys, xs = self.ys, self.xs
@@ -99,7 +99,9 @@ class Renderer:
                     ax.add_patch(
                         plt.Rectangle((x, ys - y - 1), 1, 1, fc=(0.4, 0.4, 0.4, 1.0))
                     )
-        plt.show()
+
+        if show_plt:
+            plt.show()
 
     def render_q(self, q, show_greedy_policy=True):
         self.set_figure()

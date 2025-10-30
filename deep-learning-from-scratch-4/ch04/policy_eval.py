@@ -1,15 +1,21 @@
+# 反復方策評価
+
 if "__file__" in globals():
     import os
     import sys
 
     sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from collections import defaultdict
+import pathlib
 from common.gridworld import GridWorld
 import matplotlib.colors
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
 import typing
+from matplotlib.figure import Figure
+from common.save_animation import save_animation_with_steps
+import copy
 
 
 # 式(4.3) p.106 を一回評価
@@ -64,7 +70,10 @@ def policy_eval(
 
 
 # V_history: list[dict]  ← 各ステップのV(s)を格納済み をプロット
-def plot_value_history(V_history, env):
+def plot_value_history(
+    V_history,
+    env: GridWorld,
+):
     states = env.states()
     n_iter = len(V_history)
 
@@ -86,52 +95,20 @@ def plot_value_history(V_history, env):
 
 
 # V_historyをヒートマップとしてアニメーション表示
-def animate_value_history(V_history, env, interval=500):
-    fig, ax = plt.subplots()
-    n_rows, n_cols = env.height, env.width
-
-    # V_historyを2次元配列のリストに変換
-    value_maps = []
+def animate_value_history(V_history, env: GridWorld, interval=100):
+    fig_list: list[Figure] = []
     for V in V_history:
-        grid = np.zeros((n_rows, n_cols))
-        for y in range(n_rows):
-            for x in range(n_cols):
-                s = (y, x)
-                grid[y, x] = V[s]
-        value_maps.append(grid)
+        fig = env.render_v(V, pi, show_plt=False)
+        fig_list.append(copy.deepcopy(fig))
+        plt.close(fig)
 
-    vmax, vmin = value_maps[-1].max(), value_maps[-1].min()
-    vmax = max(vmax, abs(vmin))
-    vmin = -1 * vmax
-
-    # 色設定
-    color_list = ["red", "white", "green"]
-    cmap = matplotlib.colors.LinearSegmentedColormap.from_list(
-        "colormap_name", color_list
-    )
-
-    # 初期フレーム
-    im = ax.imshow(value_maps[0], cmap=cmap, origin="upper", vmin=vmin, vmax=vmax)
-    fig.colorbar(im, ax=ax)
-    ax.set_title("Value Propagation in GridWorld")
-
-    def update(frame):
-        im.set_array(value_maps[frame])
-        ax.set_xlabel(f"Iteration {frame + 1}/{len(value_maps)}")
-        return [im]
-
-    ani = animation.FuncAnimation(
-        fig,
-        update,
-        frames=len(value_maps),
+    save_animation_with_steps(
+        "Iterative Policy Evaluation",
+        fig_list,
+        str(pathlib.Path(__file__).parent / "iterative_policy_evaluation.gif"),
         interval=interval,
-        blit=False,
-        repeat=True,
+        show_anim=True,
     )
-
-    plt.show()
-
-    return ani
 
 
 if __name__ == "__main__":
@@ -145,9 +122,6 @@ if __name__ == "__main__":
     V = policy_eval(pi, V, env, gamma)
 
     # 可視化
-    env.render_v(V, pi)
+    # env.render_v(V, pi)
     plot_value_history(V_history, env)
-    ani = animate_value_history(V_history, env, interval=300)
-
-    # アニメーションを保存
-    ani.save("value_propagation.gif", writer="pillow")
+    ani = animate_value_history(V_history, env, interval=150)

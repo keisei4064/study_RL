@@ -91,11 +91,11 @@ class GridWorld:
         return next_state, reward, done  # (次の状態, 報酬, ゲーム終了フラグ)
 
     # 現在の推定状態価値関数:V(s) を描画
-    def render_v(self, v=None, policy=None, print_value=True) -> matplotlib.figure.Figure:
+    def render_v(self, v=None, policy=None, print_value=True, show_plt=True) -> matplotlib.figure.Figure:
         renderer = render_helper.Renderer(
             self.reward_map, self.goal_state, self.wall_state
         )
-        renderer.render_v(v, policy, print_value)
+        renderer.render_v(v, policy, print_value, show_plt=show_plt)
         
         return renderer.fig   # type: ignore
 
