@@ -16,8 +16,8 @@ class Renderer:
         self.first_flg = True
 
     def set_figure(self, figsize=None):
-        fig = plt.figure(figsize=figsize)
-        self.ax = fig.add_subplot(111)
+        self.fig = plt.figure(figsize=figsize)
+        self.ax = self.fig.add_subplot(111)
         ax = self.ax
         ax.clear()
         ax.tick_params(

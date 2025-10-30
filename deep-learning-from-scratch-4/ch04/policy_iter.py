@@ -6,11 +6,11 @@ if "__file__" in globals():
 from collections import defaultdict
 from common.gridworld import GridWorld
 from ch04.policy_eval import policy_eval
-import typing
+from typing import Any
 import pprint
 
 
-def argmax(d: dict[typing.Any, float]) -> int:
+def argmax(d: dict[Any, float]) -> int:
     """d (dict)"""
     # なんか非効率じゃね？
     max_value = max(d.values())
@@ -23,11 +23,11 @@ def argmax(d: dict[typing.Any, float]) -> int:
 
 # greedy化
 def greedy_policy(
-    V: dict[typing.Any, float],  # 推定状態価値関数
+    V: dict[Any, float],  # 推定状態価値関数
     env: GridWorld,  # 環境（状態遷移関数と報酬関数）
     gamma: float,  # 割引率γ
-) -> defaultdict[typing.Any, dict[typing.Any, float]]:
-    pi: defaultdict[typing.Any, dict[typing.Any, float]] = {}  # type: ignore
+) -> defaultdict[Any, dict[Any, float]]:
+    pi: defaultdict[Any, dict[Any, float]] = {}  # type: ignore
 
     for state in env.states():  # すべてのsについて，μ'(s)を求める
         action_values = {}
@@ -50,7 +50,7 @@ def greedy_policy(
 
 # 方策反復法
 def policy_iter(env: GridWorld, gamma, threshold=0.001, is_render=True):
-    pi: defaultdict[typing.Any, dict[typing.Any, float]] = defaultdict(
+    pi: defaultdict[Any, dict[Any, float]] = defaultdict(
         lambda: {0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25}
     )  # ランダム方策
     V = defaultdict(lambda: 0.0)
@@ -58,9 +58,8 @@ def policy_iter(env: GridWorld, gamma, threshold=0.001, is_render=True):
     while True:
         V = policy_eval(pi, V, env, gamma, threshold)  # 方策評価
         new_pi = greedy_policy(V, env, gamma)  # greedy化
-        
-        # メモ: 割引率のおかげで，最短でゴール地点の報酬1を得ようとする方策を獲得できる
 
+        # メモ: 割引率のおかげで，最短でゴール地点の報酬1を得ようとする方策を獲得できる
         if is_render:
             env.render_v(V, pi)
 

@@ -5,6 +5,7 @@ if "__file__" in globals():  # パス登録
     sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 
+import matplotlib.figure
 import numpy as np
 import common.gridworld_render as render_helper
 
@@ -90,11 +91,13 @@ class GridWorld:
         return next_state, reward, done  # (次の状態, 報酬, ゲーム終了フラグ)
 
     # 現在の推定状態価値関数:V(s) を描画
-    def render_v(self, v=None, policy=None, print_value=True):
+    def render_v(self, v=None, policy=None, print_value=True) -> matplotlib.figure.Figure:
         renderer = render_helper.Renderer(
             self.reward_map, self.goal_state, self.wall_state
         )
         renderer.render_v(v, policy, print_value)
+        
+        return renderer.fig   # type: ignore
 
     # 現在の推定行動価値関数:Q(s, a) を描画
     def render_q(self, q=None, print_value=True):
