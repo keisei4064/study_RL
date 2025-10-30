@@ -14,19 +14,19 @@ $$
 
 > ベルマン方程式を更新式として用いている
 
-状態遷移が決定論的だとすると，
+尚，状態遷移が決定論的だとすると，
 
 $$
 \begin{aligned}
 s' &= f(s, a) \text{   として,}\\
-V_{k+1}(s) &= \sum_{a} p(s'|s, a) \{ r(s, a, s') + \gamma V_k(s') \}
+V_{k+1}(s) &= \sum_{a} \pi(a|s) \{ r(s, a, s') + \gamma V_k(s') \}
 \end{aligned}
 $$
 
-十分に繰り返せば，真の状態価値関数 $v_*(s)$ に収束する
+十分に繰り返せば，真の状態価値関数 $v_\pi(s)$ に収束する
 
 $$
-v_*(s) = \lim_{k \to \infty} V_k(s)
+v_\pi(s) = \lim_{k \to \infty} V_k(s)
 $$
 
 ![iterative_policy_evaluation](./deep-learning-from-scratch-4/ch04/iterative_policy_evaluation.gif)
@@ -37,11 +37,12 @@ $$
 
 決定論的方策 $\mu(s)$ について，以下を繰り返し
 
-1. 現在の方策 $\mu(s)$ のもと，反復方策評価（収束するまで）
+1. 現在の決定論的方策 $\mu(s)$ のもと，反復方策評価（収束するまで）
 
 $$
 \begin{aligned}
-V_{k+1}(s) &= \sum_{a, s'} p(s'|s, a) \{ r(s, a, s') + \gamma V_k(s') \} \\
+a &= \mu(s) \text{ として，}\\
+V_{k+1}(s) &= \sum_{s'} p(s'|s,a)\{ r(s, a, s') + \gamma V_k(s') \} \\
 v_{\mu}(s) &= \lim_{k \to \infty} V_k(s)
 \end{aligned}
 $$
@@ -49,7 +50,7 @@ $$
 2. 方策更新(greedy化)
 
 $$
-\mu'(s) = \arg\max_{a} \sum_{s'} p(s'|s, a) \{ r(s, a, s') + \gamma v_{\mu}(s') \}
+\mu(s) \leftarrow \arg\max_{a} \sum_{s'} p(s'|s, a) \{ r(s, a, s') + \gamma v_{\mu}(s') \} \\
 $$
 
 収束して得られる方策 $\mu^*(s)$ が最適方策
