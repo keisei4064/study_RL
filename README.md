@@ -50,7 +50,7 @@ v_{\mu}(s) &= \lim_{k \to \infty} V_k(s)
 2. 方策更新(greedy化)
 
 ```math
-\mu(s) \leftarrow \arg\max_{a} \sum_{s'} p(s'|s, a) \{ r(s, a, s') + \gamma v_{\mu}(s') \} \\
+\mu(s) \leftarrow \arg\max_{a} \sum_{s'} p(s'|s, a) \{ r(s, a, s') + \gamma v_{\mu}(s') \}
 ```
 
 収束して得られる方策 $\mu^*(s)$ が最適方策
