@@ -9,10 +9,16 @@ import matplotlib.colors
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
+import typing
 
 
 # 式(4.3) p.106 を一回評価
-def eval_onestep(pi, V, env, gamma=0.9):
+def eval_onestep(
+    pi: defaultdict[typing.Any, dict[typing.Any, float]],  # 方策
+    V: defaultdict[typing.Any, float],  # 推定状態価値関数
+    env: GridWorld,  # 環境（状態遷移関数と報酬関数）
+    gamma=0.9,
+):
     for state in env.states():
         if state == env.goal_state:
             V[state] = 0
@@ -32,7 +38,13 @@ V_history = []
 
 
 # 反復評価
-def policy_eval(pi, V, env, gamma, threshold=0.001):
+def policy_eval(
+    pi: defaultdict[typing.Any, dict[typing.Any, float]],  # 方策
+    V: defaultdict[typing.Any, float],  # 推定状態価値関数
+    env: GridWorld,  # 環境（状態遷移関数と報酬関数）
+    gamma,
+    threshold=0.001,
+):
     V_history.append(V.copy())
     while True:
         old_V = V.copy()
@@ -127,7 +139,7 @@ if __name__ == "__main__":
     gamma = 0.9
 
     pi = defaultdict(lambda: {0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25})
-    V = defaultdict(lambda: 0)
+    V = defaultdict(lambda: 0.0)
 
     # 反復方策評価
     V = policy_eval(pi, V, env, gamma)

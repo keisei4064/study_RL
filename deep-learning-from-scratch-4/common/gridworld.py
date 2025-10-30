@@ -19,7 +19,13 @@ class GridWorld:
             3: "RIGHT",
         }
 
-        self.reward_map = np.array([[0, 0, 0, 1.0], [0, None, 0, -1.0], [0, 0, 0, 0]])
+        self.reward_map = np.array(
+            [
+                [0, 0, 0, 1.0],
+                [0, None, 0, -1.0],
+                [0, 0, 0, 0],
+            ]
+        )
         self.goal_state = (0, 3)
         self.wall_state = (1, 1)
         self.start_state = (2, 0)
