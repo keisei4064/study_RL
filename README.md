@@ -49,7 +49,7 @@ $$
 2. 方策更新(greedy化)
 
 $$
-\mu'(s) = \argmax_a \sum_{s'} p(s'|s, a) \{ r(s, a, s') + \gamma v_{\mu}(s') \}
+\mu'(s) = \arg\max_{a} \sum_{s'} p(s'|s, a) \{ r(s, a, s') + \gamma v_{\mu}(s') \}
 $$
 
 収束して得られる方策 $\mu^*(s)$ が最適方策
@@ -64,7 +64,7 @@ $$
 \begin{aligned}
 V_{k+1}(s) &= \max_a \sum_{s'} p(s'|s, a)\{ r(s, a, s') + \gamma V_k(s') \} \\
 V_*(s) &= \lim_{k \to \infty} V_k(s) \\
-\mu_*(s) &= \argmax_a \sum_{s'} p(s'|s, a)\{ r(s, a, s') + \gamma V_*(s') \}
+\mu_*(s) &= \arg\max_{a} \sum_{s'} p(s'|s, a)\{ r(s, a, s') + \gamma V_*(s') \}
 \end{aligned}
 $$
 
