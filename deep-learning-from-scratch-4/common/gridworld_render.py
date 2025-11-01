@@ -2,7 +2,8 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.colors
-
+import matplotlib.figure
+import copy
 
 class Renderer:
     def __init__(self, reward_map, goal_state, wall_state):
@@ -103,8 +104,10 @@ class Renderer:
 
         if show_plt:
             plt.show()
+        else:
+            plt.close()
 
-    def render_q(self, q, show_greedy_policy=True):
+    def render_q(self, q, show_greedy_policy=True, show_plt=True) -> matplotlib.figure.Figure:
         self.set_figure()
 
         ys, xs = self.ys, self.xs
@@ -167,7 +170,12 @@ class Renderer:
 
                         offset = offset_map[action]
                         ax.text(tx + offset[0], ty + offset[1], "{:12.2f}".format(tq))
-        plt.show()
+
+        if show_plt:
+            plt.show()
+        else:
+            plt.close()
+        q_fig = copy.copy(self.fig)
 
         if show_greedy_policy:
             policy = {}
@@ -179,4 +187,6 @@ class Renderer:
                     probs = {0: 0.0, 1: 0.0, 2: 0.0, 3: 0.0}
                     probs[max_action] = 1
                     policy[state] = probs
-            self.render_v(None, policy)
+            self.render_v(None, policy, show_plt=show_plt)
+
+        return q_fig  # type: ignore
