@@ -91,7 +91,7 @@ for episode in range(episodes):
 
         state = next_state
 
-    # 現在の状態価値を描画
+    # 現在の行動価値を描画
     if episode % save_rate == 0:
         fig = env.render_q(agent.Q, show_plt=False)
         figs.append(fig)

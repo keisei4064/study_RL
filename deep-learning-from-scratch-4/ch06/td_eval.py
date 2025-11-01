@@ -7,6 +7,9 @@ sys.path.append(
 from collections import defaultdict
 import numpy as np
 from common.gridworld import GridWorld
+from common.save_animation import save_animation_with_steps
+from matplotlib.figure import Figure
+import pathlib
 
 
 class TdAgent:
@@ -33,8 +36,12 @@ class TdAgent:
 
 env = GridWorld()
 agent = TdAgent()
-
 episodes = 1000
+
+figs: list[Figure] = []
+frame_names: list[str] = []
+save_rate = 20
+
 for episode in range(episodes):
     state = env.reset()
 
@@ -47,4 +54,21 @@ for episode in range(episodes):
             break
         state = next_state
 
+    # 現在の状態価値を描画
+    if episode % save_rate == 0:
+        fig = env.render_v(agent.V, show_plt=False)
+        figs.append(fig)
+        frame_names.append(f"episode={episode}")
+
 env.render_v(agent.V)
+
+
+# 状態価値更新のアニメーション
+save_animation_with_steps(
+    "TD V(s) Evaluation",
+    figs,
+    str(pathlib.Path(__file__).parent / "td_v_evaluation.gif"),
+    interval=100,
+    show_anim=True,
+    frame_names=frame_names,
+)

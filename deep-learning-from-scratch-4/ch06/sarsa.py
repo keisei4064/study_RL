@@ -8,6 +8,9 @@ from collections import defaultdict, deque
 import numpy as np
 from common.gridworld import GridWorld
 from common.utils import greedy_probs
+from common.save_animation import save_animation_with_steps
+from matplotlib.figure import Figure
+import pathlib
 
 
 class SarsaAgent:
@@ -52,8 +55,13 @@ class SarsaAgent:
 
 env = GridWorld()
 agent = SarsaAgent()
-
 episodes = 10000
+
+figs: list[Figure] = []
+frame_names: list[str] = []
+save_rate = 500
+
+
 for episode in range(episodes):
     state = env.reset()
     agent.reset()
@@ -70,4 +78,25 @@ for episode in range(episodes):
             break
         state = next_state
 
+    # 現在の行動価値を描画
+    if episode % save_rate == 0:
+        fig = env.render_q(agent.Q, show_plt=False)
+        figs.append(fig)
+        frame_names.append(f"episode={episode}")
+
+
 env.render_q(agent.Q)
+
+
+# 行動価値関数Q(s,a)更新のアニメーション
+save_animation_with_steps(
+    "SARSA",
+    figs,
+    str(
+        pathlib.Path(__file__).parent
+        / "sarsa(on_policy).gif"
+    ),
+    interval=100,
+    show_anim=True,
+    frame_names=frame_names,
+)
