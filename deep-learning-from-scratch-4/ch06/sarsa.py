@@ -80,7 +80,7 @@ for episode in range(episodes):
 
     # 現在の行動価値を描画
     if episode % save_rate == 0:
-        fig = env.render_q(agent.Q, show_plt=False)
+        fig, _ = env.render_q(agent.Q, show_plt=False)
         figs.append(fig)
         frame_names.append(f"episode={episode}")
 

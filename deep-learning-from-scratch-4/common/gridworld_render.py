@@ -5,6 +5,7 @@ import matplotlib.colors
 import matplotlib.figure
 import copy
 
+
 class Renderer:
     def __init__(self, reward_map, goal_state, wall_state):
         self.reward_map = reward_map
@@ -107,7 +108,9 @@ class Renderer:
         else:
             plt.close()
 
-    def render_q(self, q, show_greedy_policy=True, show_plt=True) -> matplotlib.figure.Figure:
+    def render_q(
+        self, q, show_greedy_policy=True, show_plt=True
+    ) -> tuple[matplotlib.figure.Figure, matplotlib.figure.Figure]:
         self.set_figure()
 
         ys, xs = self.ys, self.xs
@@ -189,4 +192,6 @@ class Renderer:
                     policy[state] = probs
             self.render_v(None, policy, show_plt=show_plt)
 
-        return q_fig  # type: ignore
+        pi_fig = copy.copy(self.fig)
+
+        return q_fig, pi_fig  # type: ignore

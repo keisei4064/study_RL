@@ -104,13 +104,13 @@ class GridWorld:
     # 現在の推定行動価値関数:Q(s, a) を描画
     def render_q(
         self, q=None, print_value=True, show_plt=True
-    ) -> matplotlib.figure.Figure:
+    ) -> tuple[matplotlib.figure.Figure, matplotlib.figure.Figure]:
         renderer = render_helper.Renderer(
             self.reward_map, self.goal_state, self.wall_state
         )
-        q_fig = renderer.render_q(q, print_value, show_plt=show_plt)
+        q_fig, pi_fig = renderer.render_q(q, print_value, show_plt=show_plt)
 
-        return q_fig  # type: ignore
+        return q_fig, pi_fig  # type: ignore
 
 
 if __name__ == "__main__":

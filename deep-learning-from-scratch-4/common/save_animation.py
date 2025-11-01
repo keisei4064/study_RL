@@ -19,7 +19,9 @@ def save_animation_with_steps(
     if frame_names is None:
         frame_names = [f"Step: {i + 1}" for i in range(len(fig_history))]
     else:
-        assert len(fig_history) == len(frame_names), "fig_historyとframe_namesの要素数が違います"
+        assert len(fig_history) == len(frame_names), (
+            "fig_historyとframe_namesの要素数が違います"
+        )
 
     fig = plt.figure(figsize=fig_history[0].get_size_inches(), layout="constrained")
     ax = fig.add_subplot(111)
